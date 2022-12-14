@@ -3,63 +3,65 @@ import plotly.express as px
 import pandas as pd
 import numpy as np
 
-try:
-    st.set_page_config(page_title="RFM Müşteri Segmentasyonu",
+
+st.set_page_config(page_title="RFM Müşteri Segmentasyonu",
                        page_icon=":chart_with_upwards_trend:",
                        layout="wide",
                        initial_sidebar_state="collapsed")
 
-    # Renders sidebar file upload menu and returns uploaded file
-    with st.sidebar:
-        excel_file = st.file_uploader(
-            label="Excel Dosyasını Yükle",
-            type=['xlsx', 'xlsm'],
-            accept_multiple_files=False
+# Renders sidebar file upload menu and returns uploaded file
+with st.sidebar:
+    excel_file = st.file_uploader(
+        label="Excel Dosyasını Yükle",
+        type=['xlsx', 'xlsm'],
+        accept_multiple_files=False
+    )
+
+with st.form(key="settingsForm"):
+    c1, c2 = st.columns(2)
+    with c1:
+        company_name = st.text_input(
+            label="Firma Adı Sütun Başlığı",
+            value="FİRMA",
+            placeholder="Gerekli Alan"
         )
 
-        with st.form(key="settingsForm"):
-            c1, c2 = st.columns(2)
-            with c1:
-                company_name = st.text_input(
-                    label="Firma Adı Sütun Başlığı",
-                    value="FİRMA",
-                    placeholder="Gerekli Alan"
-                )
+        order_no = st.text_input(
+            label="Sipariş No Sütun Başlığı",
+            value="NO ",
+            placeholder="Gerekli Alan"
+        )
 
-                order_no = st.text_input(
-                    label="Sipariş No Sütun Başlığı",
-                    value="NO ",
-                    placeholder="Gerekli Alan"
-                )
+        order_check = st.text_input(
+            label="Son Durum Sütun Başlığı",
+            value="SON DURUM",
+            placeholder="Gerekli Alan"
+        )
 
-                order_check = st.text_input(
-                    label="Son Durum Sütun Başlığı",
-                    value="SON DURUM",
-                    placeholder="Gerekli Alan"
-                )
+    with c2:
+        order_date = st.text_input(
+            label="Tarih Seçimi Sütun Başlığı",
+            value="TARİH",
+            placeholder="Gerekli Alan"
+        )
 
-            with c2:
-                order_date = st.text_input(
-                    label="Tarih Seçimi Sütun Başlığı",
-                    value="TARİH",
-                    placeholder="Gerekli Alan"
-                )
+        order_amount = st.text_input(
+            label="Toplam Tutar Sütun Başlığı",
+            value="TL TUTAR",
+            placeholder="Gerekli Alan"
+        )
 
-                order_amount = st.text_input(
-                    label="Toplam Tutar Sütun Başlığı",
-                    value="TL TUTAR",
-                    placeholder="Gerekli Alan"
-                )
+        check_value = st.text_input(
+            label="Dosyadaki Sipariş Onay Metni",
+            value="TEKLİF GÖNDERİLDİ",
+            placeholder="Gerekli Alan"
+        )
 
-                check_value = st.text_input(
-                    label="Dosyadaki Sipariş Onay Metni",
-                    value="TEKLİF GÖNDERİLDİ",
-                    placeholder="Gerekli Alan"
-                )
+    st.form_submit_button(
+        label="Onayla"
+    )
+try:
 
-            st.form_submit_button(
-                label="Onayla"
-            )
 
     # Read excel file and create a pandas dataframe
     df = pd.read_excel(excel_file)
